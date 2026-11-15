@@ -1,146 +1,162 @@
-# Quiz and Examination Portal
+# Quiz & Examination Portal
 
-A web-based Quiz and Examination Portal developed as a college group project by a team of five members.
+A web-based quiz application where students can register, log in, attempt timed multiple-choice quizzes and see their scores, and teachers/admins can create and manage quizzes through Django Admin.
 
-The project aims to provide a platform where users can participate in quizzes and examinations, while administrators can manage quizzes, questions, exams, and results.
+Built as a college project by Srijan.
 
-## Technologies Used
+## Features
 
-### Frontend
-- React.js
-- Vite
-- JavaScript
-- CSS
+**Students**
+- Register, log in and log out
+- Dashboard with available quizzes and previous results
+- Attempt MCQ quizzes with a countdown timer
+- Automatic score calculation after submission
+- Each quiz can be attempted only once
 
-### Backend
-- Python
-- Django 6.1.3
-- SQLite
+**Admins / Teachers (Django Admin)**
+- Create, edit and delete quizzes
+- Add questions and answer options, and mark the correct option
+- Mark quizzes active or inactive
+- View all student attempts and scores
 
-### Development Tools
-- Visual Studio Code
-- Git and GitHub
-- Postman
-- Node.js and npm
+## Tech Stack
+
+| Part | Technology |
+|---|---|
+| Frontend | React, Vite, JavaScript, CSS, React Router, Fetch API |
+| Backend | Python, Django (plain JSON views, no REST framework) |
+| Database | SQLite |
+| Authentication | Django sessions |
+| Tools | VS Code, Git, GitHub, Postman |
 
 ## Project Structure
 
-```text
+```
 Quiz-Portal/
-│
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   ├── package.json
-│   ├── package-lock.json
-│   └── vite.config.js
-│
 ├── backend/
-│   ├── accounts/
-│   ├── quizzes/
-│   ├── exams/
-│   ├── results/
-│   ├── config/
-│   ├── manage.py
-│   └── requirements.txt
-│
-├── .gitignore
-└── README.md
+│   ├── config/       (Django project settings and main URLs)
+│   ├── accounts/     (register, login, logout, current user)
+│   ├── quizzes/      (Quiz, Question, AnswerOption models and quiz APIs)
+│   ├── results/      (QuizAttempt model, submit and results APIs)
+│   ├── exams/        (created but not used)
+│   └── manage.py
+└── frontend/
+    └── src/
+        ├── components/   (Navbar)
+        └── pages/        (Login, Register, Dashboard, QuizAttempt)
 ```
 
-## Setup and Installation
+## How to Run
 
-### Prerequisites
+The database file (`db.sqlite3`) is not uploaded, so a new database is created on your machine.
 
-Install the following before running the project:
+### 1. Backend (Django)
 
-- Python
-- Node.js and npm
-- Git
-
-### 1. Clone the Repository
-
-```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
-cd Quiz-Portal
 ```
-
-### 2. Set Up the Backend
-
-Navigate to the backend folder:
-
-```powershell
 cd backend
-```
-
-Create a Python virtual environment:
-
-```powershell
 python -m venv venv
-```
-
-Activate the virtual environment:
-
-```powershell
-.\venv\Scripts\Activate.ps1
-```
-
-Install the required dependencies:
-
-```powershell
+venv\Scripts\activate
 pip install -r requirements.txt
-```
-
-Apply database migrations:
-
-```powershell
 python manage.py migrate
-```
-
-Create an administrator account:
-
-```powershell
 python manage.py createsuperuser
-```
-
-Start the Django development server:
-
-```powershell
 python manage.py runserver
 ```
 
-Backend server:
+The backend runs at http://127.0.0.1:8000/ and the admin panel at http://127.0.0.1:8000/admin/
 
-`http://127.0.0.1:8000/`
+### 2. Frontend (React)
 
-### 3. Set Up the Frontend
+Open a second terminal:
 
-Open a second terminal and navigate to the frontend folder:
-
-```powershell
+```
 cd frontend
-```
-
-Install frontend dependencies:
-
-```powershell
 npm install
-```
-
-Start the Vite development server:
-
-```powershell
 npm run dev
 ```
 
-Open the local URL displayed in the terminal.
+Open http://localhost:5173/ in the browser. The Vite dev server forwards every `/api/...` request to the Django server, so keep both running.
 
-## Database
+### 3. Add a quiz (as admin)
 
-The project uses SQLite as its database.
+1. Log in at `/admin/` with the superuser account.
+2. Add a Quiz (title, duration in minutes, keep "Is active" ticked).
+3. Add Questions: choose the quiz, write the question, fill the options and tick exactly one correct option.
+4. Log in as a student on the React site to see and attempt the quiz.
 
-The database file is generated locally by Django when migrations are applied. It is not included in the GitHub repository.
+## API Endpoints
 
-## Development Status
+| Method | URL | Purpose |
+|---|---|---|
+| GET | /api/quizzes/ | List active quizzes |
+| GET | /api/quizzes/<id>/ | Quiz with questions and options (correct answers are never sent) |
+| POST | /api/accounts/register/ | Create a student account |
+| POST | /api/accounts/login/ | Log in |
+| POST | /api/accounts/logout/ | Log out |
+| GET | /api/accounts/me/ | Currently logged-in user |
+| POST | /api/results/submit/<quiz_id>/ | Submit answers; the server calculates the score |
+| GET | /api/results/my/ | Logged-in student's own results |
 
-The project is currently under development. Features and functionality will be added progressively.
+## Key Design Decisions
+
+- The score is calculated on the server, so students cannot change their marks from the browser.
+- `is_correct` is never included in the quiz API response.
+- A database unique constraint (user + quiz) stops a student from submitting the same quiz twice.
+- Only multiple-choice questions are supported, to keep the scope simple.
+
+## Testing
+
+Manual test cases for the browser and Postman are listed in [TESTING.md](TESTING.md).
+
+## Screenshots
+
+## Screenshots
+
+### Student side
+
+**Register**
+
+![Register page](docs/screenshots/01-register.png)
+
+**Login**
+
+![Login page](docs/screenshots/02-login.png)
+
+**Dashboard with available quizzes and previous results**
+
+![Dashboard](docs/screenshots/03-dashboard.png)
+
+**Quiz page with countdown timer**
+
+![Quiz page with timer](docs/screenshots/04-quiz-timer.png)
+
+**Result after submission**
+
+![Result page](docs/screenshots/05-result.png)
+
+### Admin side (Django Admin)
+
+**Adding a question with answer options**
+
+![Admin add question](docs/screenshots/06-admin-add-question.png)
+
+**Quiz list**
+
+![Django Admin quiz list](docs/screenshots/07-admin-quizzes.png)
+
+**Student attempts and scores**
+
+![Admin quiz attempts](docs/screenshots/08-admin-attempts.png)
+
+
+## Limitations and Future Improvements
+
+- CSRF protection is switched off on the POST views for simplicity; it should be enabled for production.
+- The timer runs only in the browser. Refreshing the page restarts it, and the server does not enforce the time limit. Future work: store the start time on the server.
+- Answers are saved only when the quiz is submitted.
+- The "exactly one correct option" rule is checked in Django Admin, not at database level.
+- Password rules are minimal (6 characters); Django's password validators are not used.
+- Teachers use Django Admin; there is no separate React teacher dashboard.
+- The Vite proxy works only in development; deployment needs CORS or serving the React build from Django.
+- There are no automated tests yet.
+- Settings are development settings (DEBUG on).
+- There is no login rate limiting and no email verification.
