@@ -1,0 +1,80 @@
+.quiz-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  background-color: #f2f4f8;
+  padding: 10px 0;
+  margin-bottom: 10px;
+}
+
+.quiz-header h2,
+.quiz-header p {
+  margin: 0;
+}
+
+.timer {
+  background-color: #2f3e9e;
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  padding: 10px 18px;
+  border-radius: 8px;
+}
+
+.timer-low {
+  background-color: #b00020;
+}
+
+.question-card {
+  background-color: white;
+  padding: 18px 20px;
+  margin-bottom: 14px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.question-card h4 {
+  margin: 0 0 12px 0;
+}
+
+.option {
+  display: block;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.option input {
+  margin-right: 10px;
+}
+
+.submit-btn {
+  padding: 12px 28px;
+  font-size: 18px;
+  background-color: #2f3e9e;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.submit-btn:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+.result-card {
+  text-align: center;
+}
+
+.big-score {
+  font-size: 48px;
+  font-weight: bold;
+  margin: 10px 0;
+}
