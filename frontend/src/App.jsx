@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import Navbar from './components/Navbar.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import Login from './pages/Login.jsx'
+import QuizAttempt from './pages/QuizAttempt.jsx'
 import Register from './pages/Register.jsx'
 
 function App() {
@@ -44,6 +45,10 @@ function App() {
           <Route
             path="/dashboard"
             element={user ? <Dashboard user={user} /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/quiz/:quizId"
+            element={user ? <QuizAttempt /> : <Navigate to="/login" />}
           />
         </Routes>
       </main>
